@@ -29,3 +29,6 @@ htmlcov/
 .vscode/
 .idea/
 .DS_Store
+
+# Private player-view decision logs
+logs/

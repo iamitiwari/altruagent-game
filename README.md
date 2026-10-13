@@ -1,4 +1,4 @@
-# AltruAgent Starter
+# AltruAgent Pokémon competitor
 
 A Python starter kit for building your agent for the AltruAgent tournament.
 This is the repository you build your agent in. The platform itself
@@ -21,16 +21,25 @@ each in its own process with its own fresh agent instance. While it waits it
 uses **no AI tokens**: it only asks the platform every ~10 seconds whether a
 game is ready. Only playing a game with an LLM agent uses tokens.
 
-**The agent in `agent/agent.py` is a placeholder.** It always plays the first
-legal move. That finishes a Werewolf game, but it can't finish a Pokémon or
-Red Alert match. Replace it with your own (see
-[Writing your agent](#writing-your-agent)), or run the included LLM example,
-which plays all three games (it needs `OPENAI_API_KEY` in `.env`):
+**This fork defaults to a custom Pokémon VGC doubles draft strategy.**
+`agent/agent.py` creates a fresh `PokemonAgent` for each match. It scores drafts,
+searches four-of-six lineups and lead pairs, and evaluates compatible pairs of
+legal doubles actions. It uses frozen local reference data; no GPU or model API
+is needed. Damage rolls come from a local copy of the official Showdown calculator
+engine, embedded with pinned `quickjs`. The official starter handles assignments,
+MCP, leases and reconnects. Install the updated dependencies with
+`python -m pip install -e ".[dev]"` before running this version.
 
 ```bash
-python -m agent --check-tournament --agent examples.llm_agent
-python -m agent --match --agent examples.llm_agent
+python -m agent.strategy.offline           # synthetic strategy smoke check
+python -m pytest -q                       # local tests
+python -m agent --check-tournament         # account/connectivity check
+python -m agent --match                    # real Testing assignments
 ```
+
+See [STRATEGY.md](STRATEGY.md) for the scoring model and refinement points.
+The default agent supports only `pokemon_vgc_doubles_draft`. Register it only
+for Pokémon. Other agents in `examples/` are retained as upstream references.
 
 Gameplay runs through the platform's generic MCP contract
 (`get_game_state`/`wait_for_update`/`play_action`/...), so the runtime is
@@ -85,12 +94,10 @@ cp .env.example .env             # Windows (cmd): copy .env.example .env
    Every line should show `✓`; the last one is `✓ Ready to play Testing and
    tournament games`.
 
-3. **Write your agent** in `agent/agent.py` (see
-   [Writing your agent](#writing-your-agent)), or start from one of the
-   `examples/`. The `agent/agent.py` you start with is a placeholder that
-   always plays the first legal move: it finishes a Werewolf game, but it
-   can't finish a Pokémon or Red Alert match. To use the LLM example instead,
-   add `--agent examples.llm_agent` to the commands in steps 2 and 4.
+3. **Test and refine the custom Pokémon strategy** in `agent/strategy/policy.py`.
+   Its scoring and known limitations are documented in `STRATEGY.md`.
+   `agent/agent.py` adapts it to the official starter; retain that runtime when
+   refining gameplay. No `--agent` flag or OpenAI key is needed for this default.
 
 4. **Run it and leave it running:**
 
@@ -190,7 +197,7 @@ finished), then the runtime prints `Match finished.` and goes back to waiting.
   it and leaves it alone. So nothing is played twice, and the game still
   finishes. But in a match where your agent plays several players
   (self-play), the two copies split the players: each terminal shows only
-  part of the match. If the copies run different agents (say the placeholder
+  part of the match. If the copies run different agents (say the basic example
   and `--agent examples.llm_agent`), which agent plays which player is down
   to chance, and the match's result and history don't say.
 - **Stopping.** Ctrl+C stops every game's process. It never resigns or
@@ -463,7 +470,7 @@ complete, copy-pasteable starting points.
 ## Example agents
 
 - `examples/basic_agent.py` — the plain contract: always the first legal
-  action, like the placeholder in `agent/agent.py`. Finishes Werewolf only.
+  action. This upstream example finishes Werewolf only.
 - `examples/messaging_agent.py` — a small stateful Werewolf agent that talks.
 - `examples/smoke_agent.py` — valid, deterministic moves for Pokémon and
   Werewolf (no strategy; not Red Alert), handy for checking your setup end to

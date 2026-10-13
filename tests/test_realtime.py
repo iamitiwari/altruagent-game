@@ -237,12 +237,12 @@ def test_other_agent_errors_in_a_real_time_game_keep_the_usual_message():
         run_game(game, RED_ALERT, broken, sleep=lambda s: None)
 
 
-def test_the_real_placeholder_module_in_red_alert_says_plainly_it_cant_play_it():
+def test_default_pokemon_agent_rejects_red_alert_explicitly():
     from agent.agent import create_agent
 
     game = RealtimeFakeGame(CONFIG).queue_state(ra_state(100))
 
-    with pytest.raises(DecisionError, match=r"^Your agent can't play Red Alert:"):
+    with pytest.raises(DecisionError, match=r"supports only pokemon_vgc_doubles_draft"):
         run_game(game, RED_ALERT, create_agent(), sleep=lambda s: None)
 
 

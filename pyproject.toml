@@ -7,6 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "httpx>=0.27",
     "python-dotenv>=1.0",
+    "quickjs==1.19.4",  # local JavaScript engine for the frozen Showdown calculator
     "mcp>=1.12.0,<2.0.0",  # 2.x renames streamablehttp_client -> streamable_http_client;
                            # pinned to the 1.x line to match Agent_ACP's own gameapi
                            # dependency (mcp>=1.12.0, 1.28.1 actually installed there)
@@ -24,3 +25,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["altruagent*", "agent*"]
+
+[tool.setuptools.package-data]
+"agent.strategy" = ["data/*.json", "data/*.md", "data/POKE_ENV_LICENSE", "*.js", "vendor/smogon/*.js", "vendor/smogon/*.json", "vendor/smogon/*.md", "vendor/smogon/LICENSE"]
