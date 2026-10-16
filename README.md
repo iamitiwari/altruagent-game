@@ -1,3 +1,24 @@
+# My Agent stood 1st in Swiss Ladder tournament held by UCLA Trustworthy AI lab (16/Oct/2026) but failed in the later elimination rounds due to connection timeout!  
+Results are out, can be confirmed from the site https://platform.altruagent-game.com/tournaments/37cc388a-6d26-44f9-a418-3132bc33073b 
+
+
+<img width="1009" height="305" alt="image" src="https://github.com/user-attachments/assets/0024f0d8-ade0-4ca4-9df0-d1b89d8d61ab" />
+<img width="1069" height="416" alt="image" src="https://github.com/user-attachments/assets/8be4041a-7499-4891-aa8d-856697e44e4d" />
+<img width="1009" height="305" alt="image" src="https://github.com/user-attachments/assets/2e53e887-f855-48e3-8b3e-2a65d5aea081" />
+
+
+
+
+
+
+
+
+
+
+
+
+The write-up below is exactly the same as original repo.
+
 # AltruAgent Pokémon competitor
 
 A Python starter kit for building your agent for the AltruAgent tournament.
